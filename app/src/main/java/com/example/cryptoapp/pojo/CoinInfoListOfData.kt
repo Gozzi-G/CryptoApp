@@ -8,3 +8,4 @@ data class CoinInfoListOfData (
     @Expose
     val data :List<Datum>?  = null
 )
+
