@@ -6,7 +6,7 @@ import com.google.gson.annotations.Expose
 
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "fullPriceList")
+@Entity(tableName = "full_price_list")
 data class CoinPriceInfo (
     @SerializedName("TYPE")
     @Expose
@@ -15,7 +15,6 @@ data class CoinPriceInfo (
     @SerializedName("MARKET")
     @Expose
     private val market: String? = null,
-
     @PrimaryKey
     @SerializedName("FROMSYMBOL")
     @Expose
