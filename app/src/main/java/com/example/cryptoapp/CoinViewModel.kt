@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import com.example.cryptoapp.api.ApiFactory
 import com.example.cryptoapp.database.AppDatabase
 import com.example.cryptoapp.pojo.CoinPriceInfo
@@ -18,20 +19,24 @@ class CoinViewModel(application: Application) : AndroidViewModel(application) {
     private val db = AppDatabase.getInstance(application)
     private val compositeDisposable = CompositeDisposable()
 
-    private val priceList = db.coinPriceInfoDao().getPriceList()
+    val priceList = db.coinPriceInfoDao().getPriceList()
 
+    fun getDetailInfo(fSym: String): LiveData<CoinPriceInfo> {
+        return db.coinPriceInfoDao().getPriceInfoAboutCoin(fSym)
+    }
 
-    fun loadData() {
+    private fun loadData() {
         val disposable = ApiFactory.apiService.getTopCoinsInfo(limit = 10)
+
             .map { it.data?.map { it.coinInfo?.name }?.joinToString(",") }
             .flatMap { ApiFactory.apiService.getFullPriceList(fSyms = it) }
             .map { getPriceListFromRawData(it) }
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 db.coinPriceInfoDao().insertPriceList(it)
+                Log.d("test", "Success: $it")
             }, {
-                Log.d("test", it.message.toString())
+                Log.d("test", "Failure: ${it.message}")
             })
     }
 
