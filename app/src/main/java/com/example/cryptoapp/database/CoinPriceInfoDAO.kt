@@ -10,15 +10,13 @@ import retrofit2.http.GET
 import java.text.DateFormatSymbols
 
 @Dao
-interface CoinPriceInfoDAO {
+interface CoinPriceInfoDao {
+    @Query("SELECT * FROM full_price_list ORDER BY lastUpdate DESC")
+    fun getPriceList(): LiveData<List<CoinPriceInfo>>
 
-    @Query("SELECT * FROM full_price_list ORDER BY lastupdate")
-    fun getPriceList() : LiveData<List<CoinPriceInfo>>
-
-    @Query("SELECT * FROM full_price_list WHERE fromsymbol == :fSym LIMIT 1")
-    fun getPriceInfoAboutCoin(fSym: String) : LiveData<CoinPriceInfo>
+    @Query("SELECT * FROM full_price_list WHERE fromSymbol == :fSym LIMIT 1")
+    fun getPriceInfoAboutCoin(fSym: String): LiveData<CoinPriceInfo>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertPriceList(coinList: List<CoinPriceInfo>)
-
+    fun insertPriceList(priceList: List<CoinPriceInfo>)
 }

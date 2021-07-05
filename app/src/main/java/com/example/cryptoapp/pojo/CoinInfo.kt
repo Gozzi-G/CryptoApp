@@ -8,6 +8,6 @@ import com.google.gson.annotations.SerializedName
 data class CoinInfo (
     @SerializedName("Name")
     @Expose
-    var name: String? = null
+    val name: String? = null
 )
 
