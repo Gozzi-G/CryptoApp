@@ -25,10 +25,10 @@ class CoinViewModel(application: Application) : AndroidViewModel(application) {
         val disposable = ApiFactory.apiService.getTopCoinsInfo(limit = 10)
             .map { it.data?.map { it.coinInfo?.name }?.joinToString(",") }
             .flatMap { ApiFactory.apiService.getFullPriceList(fSyms = it) }
+            .map { getPriceListFromRawData(it) }
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Log.d("test", it.toString())
+                db.coinPriceInfoDao().insertPriceList(it)
             }, {
                 Log.d("test", it.message.toString())
             })
