@@ -19,6 +19,10 @@ class CoinViewModel(application: Application) : AndroidViewModel(application) {
     private val db = AppDatabase.getInstance(application)
     private val compositeDisposable = CompositeDisposable()
 
+    init {
+        loadData()
+    }
+
     val priceList = db.coinPriceInfoDao().getPriceList()
 
     fun getDetailInfo(fSym: String): LiveData<CoinPriceInfo> {
