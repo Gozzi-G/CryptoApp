@@ -27,6 +27,7 @@ class CoinViewModel(application: Application) : AndroidViewModel(application) {
             .flatMap { ApiFactory.apiService.getFullPriceList(fSyms = it) }
             .map { getPriceListFromRawData(it) }
             .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 db.coinPriceInfoDao().insertPriceList(it)
             }, {
