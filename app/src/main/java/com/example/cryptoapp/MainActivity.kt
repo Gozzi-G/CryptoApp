@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.cryptoapp.api.ApiFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,7 +20,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel = ViewModelProviders.of(this)[CoinViewModel::class.java]
-        viewModel.loadData()
+//        viewModel.priceList.observe(this, Observer {
+//            Log.d("test", "Success in activity: $it")
+//        })
+        viewModel.getDetailInfo("BTC").observe(this, Observer {
+            Log.d("test", "Success in activity: $it")
+        })
     }
 
 
