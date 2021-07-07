@@ -19,6 +19,8 @@ class CoinInfoAdapter(private val context: Context): RecyclerView.Adapter<CoinIn
         notifyDataSetChanged()
     }
 
+    var onCoinClickListener: OnCoinClickListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinInfoViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_coin_info, parent, false)
         return CoinInfoViewHolder(view)
@@ -35,6 +37,9 @@ class CoinInfoAdapter(private val context: Context): RecyclerView.Adapter<CoinIn
         holder.tvPrice.text = coin.price
         holder.tvUpDate.text = String.format(lastUpdateSymbols, coin.getFormattedTime())
         Picasso.get().load(coin.getFullImageUrl()).into(holder.ivLogoCoin)
+        holder.itemView.setOnClickListener{
+            onCoinClickListener?.onCoinClick(coin)
+        }
     }
 
 
@@ -44,6 +49,10 @@ class CoinInfoAdapter(private val context: Context): RecyclerView.Adapter<CoinIn
         val tvPrice = itemView.tvPrice
         val tvUpDate = itemView.tvUpDate
 
+    }
+
+    interface OnCoinClickListener {
+        fun onCoinClick(coinPriceInfo: CoinPriceInfo)
     }
 
 
