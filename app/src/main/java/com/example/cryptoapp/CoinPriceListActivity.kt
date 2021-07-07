@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.cryptoapp.adapter.CoinInfoAdapter
+import com.example.cryptoapp.pojo.CoinPriceInfo
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_coin_price_list.*
 
@@ -16,7 +17,13 @@ class CoinPriceListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_coin_price_list)
-        val adapter = CoinInfoAdapter()
+        val adapter = CoinInfoAdapter(this)
+        adapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
+            override fun onCoinClick(coinPriceInfo: CoinPriceInfo) {
+                Log.d("test_click", coinPriceInfo.fromSymbol)
+            }
+
+        }
         rvCoinPriceList.adapter = adapter
         viewModel = ViewModelProviders.of(this)[CoinViewModel::class.java]
         viewModel.priceList.observe(this, Observer {
