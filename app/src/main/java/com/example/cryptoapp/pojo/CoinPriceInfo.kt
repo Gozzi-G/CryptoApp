@@ -137,3 +137,5 @@ data class CoinPriceInfo(
         return BASE_IMAGE_URL + imageUrl
     }
 }
+
+
