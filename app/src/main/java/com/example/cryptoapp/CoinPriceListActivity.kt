@@ -27,8 +27,6 @@ class MainActivity : AppCompatActivity() {
             Log.d("test", "Success in activity: $it")
         })
     }
-
-
 }
 
 
