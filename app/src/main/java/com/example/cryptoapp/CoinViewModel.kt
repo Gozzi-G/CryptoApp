@@ -2,7 +2,6 @@ package com.example.cryptoapp
 
 import android.app.Application
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.example.cryptoapp.api.ApiFactory
@@ -10,7 +9,6 @@ import com.example.cryptoapp.database.AppDatabase
 import com.example.cryptoapp.pojo.CoinPriceInfo
 import com.example.cryptoapp.pojo.CoinPriceInfoRawData
 import com.google.gson.Gson
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
