@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_coin_detail.*
 
 class CoinDetailActivity : AppCompatActivity() {
 
@@ -23,14 +25,21 @@ class CoinDetailActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this)[CoinViewModel::class.java]
         fromSymbol?.let {
             viewModel.getDetailInfo(it).observe(this, Observer {
-                Log.d("DETAIL_INFO", it.toString())
+                tvPrice.text = it.price
+                tvMinPrice.text = it.low24Hour
+                tvMaxPrice.text = it.high24Hour
+                tvLastMarket.text = it.lastMarket
+                tvLastUpdate.text = it.getFormattedTime()
+                tvFromSymbol.text = it.fromSymbol
+                tvToSymbol.text = it.toSymbol
+                Picasso.get().load(it.getFullImageUrl()).into(ivLogoCoin)
             })
         }
 
     }
 
     companion object {
-         private const val EXTRA_FROM_SYMBOL = "fSym"
+        private const val EXTRA_FROM_SYMBOL = "fSym"
 
         fun newIntent(context: Context, fromSymbol: String): Intent {
             val intent = Intent(context, CoinDetailActivity::class.java)
