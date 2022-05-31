@@ -3,20 +3,16 @@ package com.example.cryptoapp.presentation.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.ItemCoinInfoBinding
 import com.example.cryptoapp.domain.CoinInfo
+import com.example.cryptoapp.presentation.adapter.CoinInfoAdapter.*
 import com.squareup.picasso.Picasso
 
 class CoinInfoAdapter(private val context: Context) :
-    RecyclerView.Adapter<CoinInfoAdapter.CoinInfoViewHolder>() {
-
-    var coinInfoDtoList: List<CoinInfo> = listOf()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+    ListAdapter<CoinInfo, CoinInfoViewHolder>(CoinInfoDiffCallback()) {
 
     var onCoinClickListener: OnCoinClickListener? = null
 
@@ -26,13 +22,11 @@ class CoinInfoAdapter(private val context: Context) :
         return CoinInfoViewHolder(binding)
     }
 
-    override fun getItemCount() = coinInfoDtoList.size
-
 
     override fun onBindViewHolder(holder: CoinInfoViewHolder, position: Int) {
         val symbolsTemplate = context.resources.getString(R.string.symbols_template)
         val lastUpdateSymbols = context.resources.getString(R.string.last_update_template)
-        val coin = coinInfoDtoList[position]
+        val coin = getItem(position)
         holder.binding.tvSymbols.text =
             String.format(symbolsTemplate, coin.fromSymbol, coin.toSymbol)
         holder.binding.tvPrice.text = coin.price
