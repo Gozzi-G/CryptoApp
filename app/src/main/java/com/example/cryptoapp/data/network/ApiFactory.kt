@@ -1,4 +1,4 @@
-package com.example.cryptoapp.api
+package com.example.cryptoapp.data.network
 
 
 import retrofit2.Retrofit
