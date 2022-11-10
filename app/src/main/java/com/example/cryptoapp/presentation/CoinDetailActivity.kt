@@ -5,18 +5,29 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.example.cryptoapp.App
 import com.example.cryptoapp.databinding.ActivityCoinDetailBinding
 import com.squareup.picasso.Picasso
+import javax.inject.Inject
 
 class CoinDetailActivity : AppCompatActivity() {
 
     private lateinit var viewModel: CoinViewModel
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
     private val binding by lazy {
         ActivityCoinDetailBinding.inflate(layoutInflater)
     }
 
+    private val component by lazy {
+        (application as App).component
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         if (!intent.hasExtra(EXTRA_FROM_SYMBOL)) {
@@ -24,7 +35,7 @@ class CoinDetailActivity : AppCompatActivity() {
             return
         }
         val fromSymbol = intent.getStringExtra(EXTRA_FROM_SYMBOL) ?: ""
-        viewModel = ViewModelProvider(this)[CoinViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[CoinViewModel::class.java]
         viewModel.getDetailInfo(fromSymbol).observe(this)  {
             with(binding) {
                 tvPrice.text = it.price
